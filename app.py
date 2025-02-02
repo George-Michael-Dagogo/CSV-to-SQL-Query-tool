@@ -290,7 +290,7 @@ def main():
                                         }[download_format]
                                     )
                     else:
-                        st.warning("⚠️ Please enter a SQL query")
+                        st.warning("⚠️  Please enter a SQL query")
 
 if __name__ == "__main__":
     main()
