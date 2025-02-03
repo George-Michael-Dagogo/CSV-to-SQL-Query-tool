@@ -80,6 +80,18 @@ def clean_for_sql(df: pd.DataFrame) -> pd.DataFrame:
             if np.issubdtype(dtype, np.floating):
                 cleaned_df[column] = cleaned_df[column].round(6)
         
+        elif np.issubdtype(dtype, np.number):
+            # Add this new section here:
+            # Remove commas and convert to numeric if possible
+            if cleaned_df[column].dtype == 'object':
+                cleaned_df[column] = cleaned_df[column].astype(str).str.replace(',', '').replace('', None)
+                cleaned_df[column] = pd.to_numeric(cleaned_df[column], errors='coerce')
+            
+            # Then continue with existing code:
+            cleaned_df[column] = cleaned_df[column].replace([np.inf, -np.inf], None)
+            if np.issubdtype(dtype, np.floating):
+                cleaned_df[column] = cleaned_df[column].round(6)
+
         # Handle date/time columns
         elif np.issubdtype(dtype, np.datetime64):
             cleaned_df[column] = cleaned_df[column].apply(
