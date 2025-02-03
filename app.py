@@ -69,7 +69,7 @@ def clean_for_sql(df: pd.DataFrame) -> pd.DataFrame:
                 # Try converting to numeric - if successful, this is a numeric column
                 pd.to_numeric(sample)
                 # If we get here, conversion worked, so clean the actual column
-                cleaned_df[column] = cleaned_df[column].astype(str).str.replace(',', '')
+                cleaned_df[column] = cleaned_df[column].str.replace(',', '')
                 cleaned_df[column] = pd.to_numeric(cleaned_df[column], errors='coerce')
             except:
                 # Not a numeric column, skip it
