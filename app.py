@@ -58,6 +58,22 @@ def clean_for_sql(df: pd.DataFrame) -> pd.DataFrame:
     
     # Clean column names
     cleaned_df.columns = [clean_column_name(col) for col in cleaned_df.columns]
+
+    # First pass: Detect and convert string columns with numbers and commas
+    for column in cleaned_df.columns:
+        # Check if column is string/object type
+        if cleaned_df[column].dtype == 'object':
+            # Check if all non-null values in column could be numeric after removing commas
+            sample = cleaned_df[column].dropna().astype(str).str.replace(',', '')
+            try:
+                # Try converting to numeric - if successful, this is a numeric column
+                pd.to_numeric(sample)
+                # If we get here, conversion worked, so clean the actual column
+                cleaned_df[column] = cleaned_df[column].astype(str).str.replace(',', '')
+                cleaned_df[column] = pd.to_numeric(cleaned_df[column], errors='coerce')
+            except:
+                # Not a numeric column, skip it
+                continue
     
     for column in cleaned_df.columns:
         dtype = cleaned_df[column].dtype
