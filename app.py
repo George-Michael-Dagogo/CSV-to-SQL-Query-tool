@@ -165,7 +165,7 @@ def prepare_download_data(df, format_type):
         return None
 
 def main():
-    st.title("🔍 Multi-format SQL Query Tool")
+    st.title("🔍 Multi-format SQL Query Tool For Analogue Shifts")
     st.markdown("---")
     
     col1, col2 = st.columns([1, 3])
